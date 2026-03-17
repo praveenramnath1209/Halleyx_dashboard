@@ -1,0 +1,51 @@
+.canvas {
+  position: relative;
+  min-height: 540px;
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--r16);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(var(--surface3) 1px, transparent 1px),
+    linear-gradient(90deg, var(--surface3) 1px, transparent 1px);
+  transition: border-color .2s, background-color .2s;
+}
+.dragActive {
+  border-color: var(--accent);
+  background-image:
+    linear-gradient(rgba(91,106,249,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,106,249,.07) 1px, transparent 1px);
+  background-color: rgba(91,106,249,.015);
+}
+
+.empty {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px; color: var(--text3); pointer-events: none;
+}
+.emptyIcon { font-size: 44px; opacity: .25; }
+.empty p   { font-size: 13px; font-weight: 500; }
+
+/* Drop ghost — for new widgets dragged from panel */
+.ghost {
+  position: absolute; z-index: 5;
+  border-radius: var(--r12);
+  border: 2px dashed var(--accent);
+  background: rgba(91,106,249,.07);
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 12px; font-weight: 600;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* Drop target — shows where the dragged widget will land */
+.dropTarget {
+  position: absolute; z-index: 4;
+  border-radius: var(--r12);
+  border: 2px solid var(--accent);
+  background: rgba(91,106,249,.08);
+  pointer-events: none;
+  box-shadow: 0 0 0 4px rgba(91,106,249,.1);
+}
+
+@keyframes pulse { 0%,100% { opacity:.45; } 50% { opacity:.9; } }

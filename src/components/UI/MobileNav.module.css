@@ -1,0 +1,45 @@
+.backdrop {
+  position: fixed; inset: 0; background: rgba(17,24,39,.4);
+  z-index: 300; backdrop-filter: blur(3px);
+  animation: fadeIn .15s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
+  background: var(--surface); border-right: 1px solid var(--border);
+  z-index: 400; display: flex; flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn .22s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+.drawerHeader {
+  padding: 18px 16px 14px; border-bottom: 1px solid var(--border);
+}
+.drawerLogo { display: flex; align-items: center; gap: 9px; }
+.mark {
+  width: 28px; height: 28px; border-radius: var(--r8);
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: white;
+}
+.name { font-weight: 700; font-size: 14px; color: var(--text); }
+
+.item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; font-size: 14px; font-weight: 500;
+  font-family: inherit; cursor: pointer; border: none;
+  background: none; color: var(--text2); text-align: left;
+  transition: all .15s; border-left: 3px solid transparent;
+  margin: 2px 8px; border-radius: var(--r8);
+}
+.item:hover { background: var(--surface2); color: var(--text); }
+.item.active { background: var(--accent-lt); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+.icon {
+  width: 32px; height: 32px; border-radius: var(--r8);
+  background: var(--surface3); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background .15s;
+}
+.item.active .icon { background: white; }

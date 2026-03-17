@@ -1,0 +1,17 @@
+.kpi {
+  display: flex; flex-direction: column; gap: 6px;
+  justify-content: center; height: 100%; padding: 8px 4px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.label {
+  font-size: 11px; color: var(--text3); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.value {
+  font-size: 32px; font-weight: 800; letter-spacing: -1.5px;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1; color: var(--accent);
+}
+.affix { font-size: 17px; font-weight: 600; color: var(--text3); font-family: 'Plus Jakarta Sans', sans-serif; }
+.desc  { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: 'Plus Jakarta Sans', sans-serif; }

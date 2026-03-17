@@ -1,0 +1,14 @@
+.wrap { display: flex; flex-direction: column; height: 100%; font-family: 'Plus Jakarta Sans', sans-serif; }
+.tableWrap { flex: 1; overflow: auto; }
+.table { width: 100%; border-collapse: collapse; font-family: 'Plus Jakarta Sans', sans-serif; }
+.table th { position: sticky; top: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+.table td { font-family: 'Plus Jakarta Sans', sans-serif; }
+.pagination { display: flex; gap: 4px; padding: 6px 0; justify-content: center; flex-shrink: 0; }
+.pageBtn {
+  width: 24px; height: 24px; border-radius: var(--r6); border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text2); font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.pageBtn:hover { border-color: var(--accent); color: var(--accent); }
+.pageBtn.active { background: var(--accent); border-color: var(--accent); color: #fff; }

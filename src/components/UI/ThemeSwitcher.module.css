@@ -1,0 +1,62 @@
+.wrap { position: relative; }
+
+.trigger {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: var(--r8);
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: all .15s; box-shadow: var(--shadow-xs);
+  white-space: nowrap;
+}
+.trigger:hover { border-color: var(--accent); background: var(--surface); }
+
+.triggerIcon { font-size: 13px; line-height: 1; }
+.triggerLabel { color: var(--text2); }
+
+.chevron { color: var(--text3); transition: transform .2s; flex-shrink: 0; }
+.chevronOpen { transform: rotate(180deg); }
+
+/* Dropdown */
+.dropdown {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  width: 180px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r12); box-shadow: var(--shadow-lg);
+  padding: 6px; z-index: 999;
+  animation: popIn .15s cubic-bezier(.22,1,.36,1);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.95) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1)  translateY(0); }
+}
+
+.dropdownHeader {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 8px 6px;
+}
+
+.option {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; padding: 8px 10px; border-radius: var(--r8);
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--text2); text-align: left;
+  transition: all .12s; position: relative;
+}
+.option:hover { background: var(--surface2); color: var(--text); }
+.optionActive { background: var(--accent-lt) !important; color: var(--accent) !important; }
+
+.optionIcon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+.optionLabel { flex: 1; }
+.check { color: var(--accent); flex-shrink: 0; }
+
+/* Mini colour swatch preview */
+.optionPreview {
+  width: 28px; height: 16px; border-radius: 4px; flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,.08);
+}
+[data-theme-preview="light"]    { background: linear-gradient(135deg, #f0f2f7 50%, #ffffff 50%); }
+[data-theme-preview="dark"]     { background: linear-gradient(135deg, #0f1117 50%, #1a1d27 50%); }
+[data-theme-preview="warm"]     { background: linear-gradient(135deg, #faf7f2 50%, #ffffff 50%); }
