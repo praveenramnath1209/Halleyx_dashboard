@@ -2,20 +2,22 @@ import { useState } from 'react'
 import { WidgetPanel } from '../Canvas/WidgetPanel'
 import { DragCanvas }  from '../Canvas/DragCanvas'
 import { ConfigPanel } from '../Canvas/ConfigPanel'
-import { WIDGET_TYPES, genId, COL_COUNT } from '../../data/constants'
+import { WIDGET_TYPES, genId } from '../../data/constants'
 import styles from './ConfigPage.module.css'
 
 export function ConfigPage({ widgets, setWidgets, onSave, onCancel }) {
   const [selectedWidget,   setSelectedWidget]   = useState(null)
   const [draggingNewType,  setDraggingNewType]  = useState(null)
 
-  const handleDropNew = (type, col, row) => {
+  const handleDropNew = (type, col, row, w, h) => {
     const wt = WIDGET_TYPES[type]
+    const safeW = w ?? wt.defaultW
+    const safeH = h ?? wt.defaultH
     const newWidget = {
       id: genId(),
       type,
-      layout: { col: Math.min(col, COL_COUNT - wt.defaultW), row: Math.max(0, row), w: wt.defaultW, h: wt.defaultH },
-      config: { title: 'Untitled', width: wt.defaultW, height: wt.defaultH, color: '#5b6af9', headerBg: '#54bd95', fontSize: 14, dataFormat: 'Number', decimalPrecision: 0, aggregation: 'Count' },
+      layout: { col: Math.max(0, col), row: Math.max(0, row), w: safeW, h: safeH },
+      config: { title: 'Untitled', width: safeW, height: safeH, color: '#5b6af9', headerBg: '#54bd95', fontSize: 14, dataFormat: 'Number', decimalPrecision: 0, aggregation: 'Count' },
     }
     setWidgets(prev => [...prev, newWidget])
   }

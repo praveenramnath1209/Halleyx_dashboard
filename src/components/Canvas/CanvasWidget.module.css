@@ -46,6 +46,7 @@
   position: absolute; top: 0; left: 0; right: 32px; height: 40px;
   cursor: grab; z-index: 2;
   border-radius: var(--r12) var(--r12) 0 0;
+  touch-action: none;
 }
 .dragHandle:active { cursor: grabbing; }
 
@@ -80,6 +81,17 @@
   display: flex; align-items: center; justify-content: center;
   color: var(--border2); border-radius: 4px;
   transition: color .15s, background .15s;
+  touch-action: none;
 }
 .resizeHandle:hover { color: var(--accent); background: var(--accent-lt); }
 .widget.selected .resizeHandle { color: var(--accent); }
+
+/* Larger tap target on touch/mobile */
+@media (max-width: 639px) {
+  .resizeHandle {
+    width: 36px; height: 36px;
+    bottom: 0; right: 0;
+    border-radius: var(--r12) 0 var(--r12) 0;
+    background: var(--surface2);
+  }
+}

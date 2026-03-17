@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { COL_COUNT, ROW_H, WIDGET_TYPES, DATE_FILTERS } from '../../data/constants'
+import { compact } from '../../hooks/useFreeDrag'
 import { ChartWidget } from '../Widgets/ChartWidget'
 import { KPIWidget }   from '../Widgets/KPIWidget'
 import { TableWidget } from '../Widgets/TableWidget'
@@ -14,7 +15,7 @@ const TYPE_COLORS_LT = {
   area: 'var(--c-area-lt)', scatter: 'var(--c-scatter-lt)', table: 'var(--c-table-lt)', kpi: 'var(--c-kpi-lt)',
 }
 
-// Clamp cols for responsive breakpoints
+// Responsive column count: 12 / 8 / 4
 function getResponsiveCols() {
   if (typeof window === 'undefined') return COL_COUNT
   if (window.innerWidth < 640)  return 4
@@ -25,17 +26,26 @@ function getResponsiveCols() {
 export function DashboardPage({ savedWidgets, filteredOrders, dateFilter, setDateFilter, onConfigure }) {
   const [responsiveCols, setResponsiveCols] = useState(getResponsiveCols)
 
-  // Update cols on resize
   useEffect(() => {
     const handler = () => setResponsiveCols(getResponsiveCols())
     window.addEventListener('resize', handler)
     return () => window.removeEventListener('resize', handler)
   }, [])
 
-  // Canvas height — same formula as DragCanvas
-  const canvasH = savedWidgets.reduce(
-    (m, w) => Math.max(m, w.layout.row + w.layout.h), 0
-  ) * ROW_H + ROW_H * 2
+  // Run compact with the current responsive col count so widgets never overlap
+  // at any breakpoint. We pass null as lockedId so every widget is reflowed.
+  const reflowedLayouts = useMemo(() => {
+    if (savedWidgets.length === 0) return {}
+    return compact(savedWidgets, null, null, responsiveCols)
+  }, [savedWidgets, responsiveCols])
+
+  // Canvas height driven by the reflowed layouts (not raw saved positions)
+  const canvasH = savedWidgets.length === 0
+    ? 400
+    : Math.max(
+        Object.values(reflowedLayouts).reduce((m, l) => Math.max(m, l.row + l.h), 0) * ROW_H + ROW_H * 2,
+        400
+      )
 
   return (
     <div className={styles.page}>
@@ -93,21 +103,17 @@ export function DashboardPage({ savedWidgets, filteredOrders, dateFilter, setDat
           </div>
         </div>
       ) : (
-        /* ── Widget view — absolute positioned, 1:1 with canvas ── */
+        /* ── Widget view — absolutely positioned but reflowed per breakpoint ── */
         <div className={styles.view}>
-          <div className={styles.canvasView} style={{ height: Math.max(canvasH, 400) }}>
+          <div className={styles.canvasView} style={{ height: canvasH }}>
             {savedWidgets.map(w => {
-              const cols = responsiveCols
+              const layout = reflowedLayouts[w.id] || w.layout
 
-              // Clamp position and size to responsive col count
-              const clampedCol = Math.min(w.layout.col, cols - 1)
-              const clampedW   = Math.min(w.layout.w, cols - clampedCol)
-
-              const colPct  = 100 / cols
-              const left    = `${clampedCol * colPct}%`
-              const width   = `calc(${clampedW * colPct}% - 8px)`
-              const top     = w.layout.row * ROW_H
-              const height  = w.layout.h * ROW_H - 8
+              const colPct = 100 / responsiveCols
+              const left   = `${layout.col * colPct}%`
+              const width  = `calc(${layout.w * colPct}% - 8px)`
+              const top    = layout.row * ROW_H
+              const height = layout.h * ROW_H - 8
 
               const color   = TYPE_COLORS[w.type]    || 'var(--accent)'
               const colorLt = TYPE_COLORS_LT[w.type] || 'var(--accent-lt)'
